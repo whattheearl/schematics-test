@@ -16,13 +16,13 @@
             "description": "Create an Angular module.",
             "schema": "./module/schema.json"
         },
-        "tyl-form-page": {
+        "page": {
             "aliases": [
-                "fp"
+                "p"
             ],
-            "factory": "./form-page",
+            "factory": "./page",
             "description": "Create an example form page.",
-            "schema": "./form-page/schema.json"
+            "schema": "./page/schema.json"
         }
     }
 }
