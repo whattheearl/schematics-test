@@ -1,13 +1,28 @@
 {
-  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
-  "schematics": {
-    "hello-world": {
-      "description": "A blank schematic.",
-      "factory": "./hello-world/index#helloWorld"
-    },
-    "ng-generate": {
-      "description": "A blank schematic.",
-      "factory": "./ng-generate/index#goodbyeWorld"
+    "schematics": {
+        "component": {
+            "aliases": [
+                "c"
+            ],
+            "factory": "./component",
+            "description": "Create an Angular component.",
+            "schema": "./component/schema.json"
+        },
+        "module": {
+            "aliases": [
+                "m"
+            ],
+            "factory": "./module",
+            "description": "Create an Angular module.",
+            "schema": "./module/schema.json"
+        },
+        "tyl-form-page": {
+            "aliases": [
+                "fp"
+            ],
+            "factory": "./form-page",
+            "description": "Create an example form page.",
+            "schema": "./form-page/schema.json"
+        }
     }
-  }
 }
