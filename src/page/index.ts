@@ -138,7 +138,8 @@ export default function (options: any): Rule {
     }
 
     let routingModulePath: Path | undefined;
-    const isLazyLoadedModuleGen = !!(options.route && options.module);
+    
+    const isLazyLoadedModuleGen = true;
     
     if (isLazyLoadedModuleGen) {
       options.routingScope = "Child";
@@ -148,7 +149,9 @@ export default function (options: any): Rule {
     const parsedPath = parseName(options.path, options.name);
     options.name = parsedPath.name;
     options.path = parsedPath.path;
-
+    if(!options.route) {
+        options.route = parsedPath.name;
+    }
     const templateSource = apply(url('./files'), [
       options.routing || (isLazyLoadedModuleGen && routingModulePath)
         ? noop()

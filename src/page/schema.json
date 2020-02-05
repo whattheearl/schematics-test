@@ -30,7 +30,7 @@
     "routing": {
       "type": "boolean",
       "description": "When true, creates a routing module.",
-      "default": false,
+      "default": true,
       "x-user-analytics": 17
     },
     "routingScope": {
@@ -57,7 +57,8 @@
     "module":  {
       "type": "string",
       "description": "The declaring NgModule.",
-      "alias": "m"
+      "alias": "m",
+      "default": "app.module"
     },
     "lintFix": {
       "type": "boolean",
