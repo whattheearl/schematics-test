@@ -1,0 +1,82 @@
+<form *ngIf="settings" (ngSubmit)="onSubmit()">
+  <tcw-card has-padding="false" fxLayout="column" fxFlex="1 0 auto">
+    <tcw-toolbar>
+      <h1 slot="start" class="tyl-typography--title">My311 Portal Settings</h1>
+    </tcw-toolbar>
+    <section class="card-content">
+      <h4>Remote service URL</h4>
+      <div fxLayoutGap="20px" fxLayout="column">
+        <tcw-text-field float-label-type="always">
+          <input type="text" id="remote-service-url" [formControl]="form.get('remoteServiceUri')" />
+          <label for="remote-service-url" slot="label">Remote service URL</label>
+        </tcw-text-field>
+        <h4>Homepage banner text</h4>
+        <tcw-text-field float-label-type="always">
+          <input type="text" id="home-banner-text" [formControl]="form.get('homePageBannerText')" />
+          <label for="home-banner-text" slot="label">Homepage banner text</label>
+        </tcw-text-field>
+      </div>
+      <h4>Mobile app links</h4>
+      <div fxLayoutGap="20px" fxLayout="row">
+        <div class="tyl-form-field">
+          <tcw-switch>
+            <input type="checkbox" id="google-play-link" [formControl]="form.get('showGooglePlayLink')" />
+          </tcw-switch>
+          <label for="google-play-link">Show Google Play link</label>
+        </div>
+        <div class="tyl-form-field">
+          <tcw-switch>
+            <input type="checkbox" id="apple-store-link" [formControl]="form.get('showAppleStoreLink')" />
+          </tcw-switch>
+          <label for="apple-store-link">Show Apple App Store link</label>
+        </div>
+      </div>
+      <h4>Summary info page</h4>
+      <div fxLayoutGap="20px" fxLayout="row">
+        <div class="tyl-form-field">
+          <tcw-switch>
+            <input type="checkbox" id="summery-info-switch" [formControl]="form.get('showSummaryInfoPage')" />
+          </tcw-switch>
+          <label for="summery-info-switch">Enable summary info page</label>
+        </div>
+      </div>
+      <h4>Map settings</h4>
+      <div fxLayout="column">
+        <tcw-text-field float-label-type="always">
+          <input type="text" id="geocoding" [formControl]="form.get('geocodingServiceUri')" />
+          <label for="geocoding" slot="label">Geocoding service URL</label>
+        </tcw-text-field>
+        <tcw-text-field float-label-type="always">
+          <input type="text" id="geometry" [formControl]="form.get('geometryServiceUri')" />
+          <label for="geometry" slot="label">Geometry service URL</label>
+        </tcw-text-field>
+        <div fxLayoutGap="20px" fxLayout="row">
+          <tcw-text-field float-label-type="always" fxFlex="50%">
+            <input type="number" id="latitude" [formControl]="form.get('mapCenterLatitude')" />
+            <label for="latitude" slot="label">Default map center latitude</label>
+          </tcw-text-field>
+          <tcw-text-field float-label-type="always" fxFlex="50%">
+            <input type="number" id="longitude" [formControl]="form.get('mapCenterLongitude')"/>
+            <label for="longitude" slot="label">Default map center longitude</label>
+          </tcw-text-field>
+        </div>
+      </div>
+    </section>
+    <tcw-toolbar inverted slot="footer">
+      <div *ngIf="isLocked" slot="end">
+        <tcw-button (click)="onEdit()">
+          <button>Edit</button>
+        </tcw-button>
+      </div>
+      <div *ngIf="!isLocked" slot="end">
+        <tcw-button (click)="onCancel()">
+          <button>Cancel</button>
+        </tcw-button>
+        <tcw-button *ngIf="!isBusy" id="save-button" type="raised">
+          <button type="submit" id="accept-button" tcw-dialog-focus>Save</button>
+        </tcw-button>
+        <tyl-app-progress-button [isBusy]="isBusy"></tyl-app-progress-button>
+      </div>
+    </tcw-toolbar>
+  </tcw-card>
+</form>

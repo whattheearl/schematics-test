@@ -23,6 +23,10 @@
             "factory": "./page",
             "description": "Create an example form page.",
             "schema": "./page/schema.json"
+        },
+        "tyler-web-components": {
+            "description": "A blank schematic.",
+            "factory": "./tyler-web-components/index#tylerWebComponents"
         }
     }
 }

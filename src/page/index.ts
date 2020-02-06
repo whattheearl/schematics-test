@@ -141,10 +141,10 @@ export default function (options: any): Rule {
     
     const isLazyLoadedModuleGen = true;
     
-    if (isLazyLoadedModuleGen) {
-      options.routingScope = "Child";
-      routingModulePath = getRoutingModulePath(host, options.module as string);
-    }
+   
+    options.routingScope = "Child";
+    routingModulePath = getRoutingModulePath(host, options.module as string);
+    
 
     const parsedPath = parseName(options.path, options.name);
     options.name = parsedPath.name;

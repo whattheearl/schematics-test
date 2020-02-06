@@ -1,0 +1,110 @@
+import { Component, OnInit<% if(!!viewEncapsulation) { %>, ViewEncapsulation<% }%><% if(changeDetection !== 'Default') { %>, ChangeDetectionStrategy<% }%> } from '@angular/core';
+import { throwError } from 'rxjs';
+import { first, finalize, catchError } from 'rxjs/operators';
+import { My311SettingsService } from '../core/services/my311-settings.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { ITyler311Configuration } from '../core/models/ITyler311Configuration';
+
+@Component({<% if(!skipSelector) {%>
+  selector: '<%= selector %>',<%}%><% if(inlineTemplate) { %>
+  template: `
+    <p>
+      <%= dasherize(name) %> works!
+    </p>
+  `,<% } else { %>
+  templateUrl: './<%= dasherize(name) %>.<%= dasherize(type) %>.html',<% } if(inlineStyle) { %>
+  styles: []<% } else { %>
+  styleUrls: ['./<%= dasherize(name) %>.<%= dasherize(type) %>.<%= style %>']<% } %><% if(!!viewEncapsulation) { %>,
+  encapsulation: ViewEncapsulation.<%= viewEncapsulation %><% } if (changeDetection !== 'Default') { %>,
+  changeDetection: ChangeDetectionStrategy.<%= changeDetection %><% } %>
+})
+export class <%= classify(name) %><%= classify(type) %> implements OnInit {
+    settings: any;
+    form: FormGroup;
+    isLocked = true;
+    isBusy = false;
+
+    constructor(
+        private _my311: My311SettingsService,
+        private _fb: FormBuilder,
+    ) { }
+
+    ngOnInit() {
+        this.loadSettings();
+    }
+
+    loadSettings() {
+        this._my311.getSettings()
+            .pipe(first())
+            .subscribe(settings => {
+                if (settings === null) return;
+                this.initForm(settings);
+                this.settings = settings;
+                this.lockForm();
+            });
+    }
+
+    initForm(settings: ITyler311Configuration) {
+        this.form = this._fb.group({
+            geocodingServiceUri: [settings.geocodingServiceUri],
+            geometryServiceUri: [settings.geometryServiceUri],
+            homePageBannerText: [settings.homePageBannerText],
+            showAppleStoreLink: [settings.showAppleStoreLink],
+            showGooglePlayLink: [settings.showGooglePlayLink],
+            showSummaryInfoPage: [settings.showSummaryInfoPage],
+            mapCenterLatitude: [settings.mapCenterLatitude],
+            mapCenterLongitude: [settings.mapCenterLongitude],
+            remoteServiceUri: [settings.remoteServiceUri],
+        });
+    }
+
+    resetForm(settings: ITyler311Configuration) {
+        this.form.reset(settings);
+    }
+
+    lockForm() {
+        this.isLocked = true;
+        this.form.disable();
+    }
+
+    unlockForm() {
+        this.isLocked = false;
+        this.form.enable();
+    }
+
+    onEdit() {
+        this.unlockForm();
+    }
+
+    onCancel() {
+        this.resetForm(this.settings);
+        this.lockForm();
+    }
+
+    onSubmit() {
+        this.isBusy = true;
+        this.form.disable();
+        this._my311.saveSettings(this.form.value)
+            .pipe(
+                first(),
+                catchError(err => {
+                    this.isBusy = false;
+                    this.form.enable();
+                    return throwError(err);
+                })
+            )
+            .subscribe(() => {
+                this._my311.getSettings()
+                    .pipe(
+                        first(),
+                        finalize(() => this.isBusy = false)
+                    )
+                    .subscribe(settings => {
+                        this.resetForm(settings);
+                        this.settings = settings;
+                        this.lockForm();
+                    })
+            })
+    }
+
+}

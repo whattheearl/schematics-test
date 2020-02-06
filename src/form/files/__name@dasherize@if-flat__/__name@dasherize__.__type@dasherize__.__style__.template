@@ -1,0 +1,15 @@
+tcw-text-field {
+  margin-bottom: 0 !important;
+}
+
+section { 
+  margin-bottom: 24px;
+}
+
+h4:first-of-type {
+  margin-top: 0;
+}
+
+h4 {
+  font-weight: 400;
+}
